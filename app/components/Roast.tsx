@@ -1,8 +1,7 @@
 "use client";
 import { useState } from "react";
-import {
-  TrendingUp, ShoppingCart, Wrench, Users, DollarSign, ChevronDown
-} from "lucide-react";
+import { TrendingUp, ShoppingCart, Wrench, Users, DollarSign, ChevronDown } from "lucide-react";
+import ScrollReveal from "./ScrollReveal";
 
 const PERSPECTIVES = [
   {
@@ -10,14 +9,14 @@ const PERSPECTIVES = [
     icon: TrendingUp,
     color: "#00d4ff",
     label: "Real-Time Market",
-    title: "Is the niche actually hot right now?",
-    verdict: "YES — but with serious caveats",
-    verdictColor: "#f59e0b",
+    title: "Is this niche actually hot right now?",
+    verdict: "YES — but trust is the real product",
+    verdictColor: "#fbbf24",
     body: [
-      "AI trading tools are a verified $18.2B market growing at 34% CAGR through 2029. Retail traders are furious that institutions have had algorithmic edge for decades — NEXUS positions itself as the democratizer.",
-      "However: the 'AI signal' space is littered with scams. Kaiju bots, pump-and-dump Discord servers, and fake backtests have poisoned the well. The #1 job is not feature-building — it's trust-building.",
-      "Opportunity: Nobody in this space offers full methodology transparency + real-time audited performance. That white space is your moat, if you fill it aggressively.",
-      "Threat: TradingView has 150M users and is adding AI fast. If they ship a signal product, you need to already own mindshare in the premium segment.",
+      "AI trading tools are a verified $18.2B market growing at 34% CAGR through 2029. Retail traders are furious that institutions have had algorithmic edge for decades. NEXUS positions itself as the democratizer — that narrative works.",
+      "However: the 'AI signal' space is littered with scams. Kaiju bots, pump-and-dump Discord groups, and fake backtests have poisoned the well. The moment a potential customer reads '89.3% win rate,' their first reaction is 'sure it is.' That's the real enemy.",
+      "The white space: nobody at the €100-300/month tier offers transparent, audited, explained, multi-asset signals with a public live performance log. That gap is real. The question is whether you can earn trust faster than the noise kills you.",
+      "Threat: TradingView has 150M users and is adding AI features. If they ship a dedicated signal product, you need to already own mindshare in the premium niche before that happens. Window is 18-24 months.",
     ],
   },
   {
@@ -25,69 +24,69 @@ const PERSPECTIVES = [
     icon: ShoppingCart,
     color: "#ef4444",
     label: "Buyer Perspective",
-    title: "Would I actually pay for this?",
-    verdict: "NOT YET — you need to prove it first",
-    verdictColor: "#ef4444",
+    title: "Would I actually pay €299/month for this?",
+    verdict: "NOT without proof first",
+    verdictColor: "#f43f5e",
     body: [
-      "At €299/month I need one thing: proof that it works. Not backtest screenshots. Not testimonials you wrote yourself. I want a LIVE verified track record on a third-party platform (FX Blue, Myfxbook, Collective2).",
-      "The signal accuracy of '89.3%' is completely meaningless without knowing: what asset class, what timeframe, what market conditions, and what a 'win' is defined as. Every scam service claims 80%+.",
-      "What would make me pull out my card: A free 7-day trial with REAL-TIME signals (not delayed). One signal that plays out correctly in front of my eyes. A live performance page I can bookmark and check daily.",
-      "The copy trading feature is the stickiest retention tool you have. If I make money from following someone on your platform, I will never cancel. That's the product-market fit you should optimize toward.",
+      "At €299/month I need one thing before I pull my card: independent proof. Not your testimonials. Not your backtests in screenshots. I want a live performance page I can bookmark and check daily — every signal, every outcome, no edits.",
+      "The signal accuracy number means nothing without context. What asset class? What timeframe? What's counted as a 'win'? What were market conditions? Every scam Telegram group claims '85%+'. You need verifiability, not claims.",
+      "What would make me buy instantly: A 7-day free trial with REAL-TIME signals. One signal that plays out correctly in front of my eyes. A public Myfxbook or similar third-party audit I can verify independently.",
+      "The copy trading feature is your stickiest retention mechanic. If I make money from following someone on your platform, I will never cancel. Everything else is secondary to this. Build it extremely well.",
     ],
   },
   {
     id: 3,
     icon: Wrench,
-    color: "#7c3aed",
+    color: "#8b5cf6",
     label: "What I'd Change",
-    title: "10 things I'd build differently",
+    title: "10 things I'd build to make this 100× better",
     verdict: "Critical upgrades needed",
-    verdictColor: "#7c3aed",
+    verdictColor: "#8b5cf6",
     body: [
-      "1. TRUST ENGINE FIRST: Build a public, real-time, audited signal log before you sell anything. No hiding. Every signal, every result, every loss. Counter-intuitive but this is the best conversion funnel.",
-      "2. FREE TIER IS WRONG: 15-minute delay destroys trust. Better: unlimited real-time signals for 7 days, then gate on asset count. Let them feel the product.",
-      "3. MOBILE APP: Traders live on their phones. A web app is fine for research; alerts and execution need to be native iOS/Android with haptic alerts.",
-      "4. SIGNAL EXPLAINABILITY: Don't just say 'LONG BTC.' Show me the graph. Highlight the pattern. Label the indicators. Show me the historical times this pattern appeared and what happened.",
-      "5. PAPER TRADING MODE: Let users follow signals with fake money first. The moment they see paper +20% in a week, they will pay for real access.",
-      "6. COMMUNITY AS MOAT: A Discord/Telegram with elite trader conversations is stickier than any feature. Host monthly calls. Build parasocial loyalty.",
-      "7. REFERRAL PROGRAM: Traders talk. 30% commission for 12 months turns your best users into a sales force. This alone could 10x growth.",
-      "8. LOSS TRANSPARENCY PAGE: Show every signal that didn't work and why. This one counterintuitive page will do more for conversion than any testimonial.",
-      "9. BROKER INTEGRATION: Partner with 3-5 brokers for one-click execution from your signals. That's a category-defining feature that creates a completely different business model (take rate on trades).",
-      "10. AI CHAT OVER DATA: Let me ask 'Should I hedge my ETH position if CPI prints hot tomorrow?' and get a specific, data-backed answer. That's the ChatGPT moment for trading.",
+      "1. PUBLIC LIVE LOG: Every signal, every outcome, every loss — in real-time, publicly. Counterintuitive but this single page will convert better than any testimonial.",
+      "2. FREE TRIAL REDESIGN: Kill the 15-minute delay. Give 7 days of full Pro access, no card. The moment they feel real-time signals working, they pay.",
+      "3. MOBILE NATIVE APP: Traders live on their phones. Web is fine for research. Alerts and execution need iOS/Android native with haptic feedback for high-confidence signals.",
+      "4. SIGNAL EXPLAINER OVERLAY: Don't just say 'LONG BTC'. Show the chart. Highlight the pattern. Label what the AI saw. Show the 3 historical times this setup appeared and what happened.",
+      "5. PAPER TRADING MODE: Let users run signals with fake money. The moment they see paper +20% in a week, they pay for real. This is the highest-converting feature you're missing.",
+      "6. LOSS TRANSPARENCY PAGE: A dedicated page showing every losing signal with post-mortem. This one page does more for trust than 1,000 winning testimonials.",
+      "7. REFERRAL PROGRAM: Traders talk in closed groups. 30% commission for 12 months turns your best users into a distributed sales team that operates without payroll.",
+      "8. BROKER INTEGRATION + TAKE RATE: Partner with 5 brokers. One-click execution from the signal. Take 0.1% of each trade volume. At scale this eclipses subscription revenue.",
+      "9. COMMUNITY AS MOAT: A Discord/Telegram where elite traders discuss positions in real-time is stickier than any feature. Host monthly strategy calls. Build parasocial loyalty.",
+      "10. REGIME DETECTION UI: Show users when the AI has shifted to 'bear market mode' vs 'bull mode' vs 'high volatility mode'. This builds trust that the system is adaptive, not static.",
     ],
   },
   {
     id: 4,
     icon: Users,
     color: "#10b981",
-    label: "Competition",
-    title: "How bad is the competitive landscape?",
-    verdict: "Scary — but there's a clear gap",
-    verdictColor: "#f59e0b",
+    label: "Competitive Landscape",
+    title: "How bad is the competition really?",
+    verdict: "Scary — but a gap clearly exists",
+    verdictColor: "#fbbf24",
     body: [
-      "Bloomberg Terminal ($28K/yr): Institutional only. No AI-native UX. Ripe for disruption at the pro-retail tier.",
-      "TradingView ($60/mo): Chart-first, signal-second. 150M users but AI features are bolt-ons, not core. Loyal but not entrenched at the signal layer.",
-      "Koyfin (free-to-$500): Data-rich, AI-poor. Their team is small, their AI roadmap is slow. Opportunity window: 18-24 months.",
-      "3Commas/Pionex: Bot-focused, not signal-focused. Different workflow. Different buyer.",
-      "Your gap: No one at the €99-299/month tier offers transparent, audited, AI-explained, multi-asset signals with social layer. That gap is real. The question is whether you can earn trust faster than the noise destroys it.",
-      "GTM bet: Partner with 5 finance YouTubers/Twitter traders (500K+ combined audience) on performance-based deals. They track signals live on their channels. If it works publicly, you don't need a sales team.",
+      "Bloomberg Terminal (€2,300+/mo): Institutional-only UX, no AI-native signal layer, not built for individual traders. The most ripe incumbent for disruption.",
+      "TradingView (€59/mo): Chart-first. 150M users. Loyal community. AI features are bolt-ons, not core. Their signal layer is weak. Weakness: not explainable, not multi-asset AI.",
+      "Koyfin (free-€500): Data-rich but AI-poor. Small team, slow AI roadmap. Opportunity window: 18-24 months before they catch up.",
+      "3Commas/Pionex/Bitsgap: Bot-focused, not signal-focused. Different workflow, different buyer psychology. Not direct competitors at your tier.",
+      "Telegram signal channels: 50K+ exist. 98% are scams or pump schemes. You differentiate with transparency, verification, and institutional-grade methodology.",
+      "Go-to-market bet: Partner with 5 finance creators (combined 500K+ audience) on performance-based deals. They run signals live on their channels. Public validation from trusted voices converts better than any ad spend.",
     ],
   },
   {
     id: 5,
     icon: DollarSign,
-    color: "#f59e0b",
-    label: "Revenue Reality",
+    color: "#fbbf24",
+    label: "Revenue Reality Check",
     title: "Is €350,000/month actually achievable?",
-    verdict: "Yes — but not how you think",
+    verdict: "Yes — but it's 18-24 months, not 6",
     verdictColor: "#10b981",
     body: [
-      "Math: €350K/month at €299 Pro = 1,170 paying subscribers. That's achievable. There are trading communities with 50K+ members. You need 2.3% conversion from a reasonably-sized audience.",
-      "Realistic timeline: Month 1-3 (trust building, free users, content); Month 4-6 (first 200 paying); Month 7-12 (scale to 500); Month 13-18 (1,000+); Month 19-24 (€350K run rate). This is an 18-24 month journey, not 6.",
-      "The real €350K path isn't the app — it's the data. At 12,000 users generating real trading behavior, you have a dataset worth €5M+ to hedge funds. That's the second business inside this product.",
-      "Customer Acquisition Cost warning: Fintech CAC runs €100-500. To acquire 1,200 customers you need €120K-600K in marketing. Either raise capital or grow through organic/affiliate-only — both are viable but slow.",
-      "The thing that will actually kill you: one high-profile signal that loses big money for a large number of users simultaneously. This is a risk management product. Your risk management can never fail publicly.",
-      "Revenue ceiling is NOT €350K. A verified track record + institutional tier + data licensing + broker take-rate model = €2-5M/month ARR within 4-5 years. The real opportunity is 10x bigger than you stated.",
+      "The math: €350K/month at €299 Pro = 1,170 paying subscribers. That's a real number. There are Discord trading communities with 50K+ members. You need 2.3% conversion from a reasonably-sized engaged audience.",
+      "Realistic milestones: Months 1-3 (trust building, free users, content); 4-6 (first 200 paying); 7-12 (500 subscribers); 13-18 (1,000 subscribers); 19-24 (€350K run rate). This is a 2-year play, not 6 months.",
+      "Warning: Fintech CAC runs €100-500 depending on channel. To acquire 1,200 customers you need €120K-600K in marketing capital. Bootstrap option: affiliate-only (30% commission) costs zero upfront but grows slower.",
+      "The real €350K path isn't subscriptions alone. It's the data layer. At 12,000 users generating real trading signals and portfolio data, you have a dataset worth €3-8M to hedge funds. Data licensing is a second business inside this one.",
+      "The actual revenue ceiling is not €350K. With verified track record + institutional tier + data licensing + broker take-rate: €2-5M/month ARR is achievable by year 4-5. You stated the floor, not the ceiling.",
+      "The thing that kills you: one high-profile signal that loses big for a large cohort simultaneously. Risk management can never fail publicly. Build this infrastructure before you have 10,000 users, not after.",
     ],
   },
 ];
@@ -96,72 +95,75 @@ export default function Roast() {
   const [open, setOpen] = useState<number | null>(1);
 
   return (
-    <section className="py-24 px-6 bg-[#070710] relative">
+    <section className="py-28 px-6 bg-[#06060e] relative">
       <div className="absolute inset-0 grid-bg opacity-20" />
       <div className="max-w-4xl mx-auto relative z-10">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#ef4444]/10 border border-[#ef4444]/30 mb-4">
-            <span className="text-xs text-[#ef4444] font-medium uppercase tracking-widest">Brutal Honest Evaluation</span>
+        <ScrollReveal className="text-center mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#f43f5e]/30 bg-[#f43f5e]/8 mb-5">
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#f43f5e]">Brutal Honest Evaluation</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-black text-[#f0f0ff] mb-4">
-            5 Perspectives.<br />
-            <span className="text-[#ef4444]">No Sugarcoating.</span>
+          <h2 className="text-4xl md:text-5xl font-black text-[#f8f8ff] mb-4">
+            5 Perspectives.
+            <br />
+            <span className="text-[#f43f5e]">Zero Sugarcoating.</span>
           </h2>
-          <p className="text-[#6b7280]">
-            Every major investor, competitor, and skeptical customer is thinking this.
-            Better to know it now than find out in churn.
+          <p className="text-[#707090]">
+            Every investor, competitor, and skeptical customer is thinking this.
+            Better to face it now than discover it in your churn data.
           </p>
-        </div>
+        </ScrollReveal>
 
-        <div className="space-y-3">
+        <div className="space-y-2">
           {PERSPECTIVES.map(({ id, icon: Icon, color, label, title, verdict, verdictColor, body }) => (
-            <div
-              key={id}
-              className="rounded-xl border overflow-hidden transition-all duration-300"
-              style={{ borderColor: open === id ? `${color}40` : "#1a1a2e" }}
-            >
-              <button
-                onClick={() => setOpen(open === id ? null : id)}
-                className="w-full p-5 text-left flex items-center gap-4 hover:bg-[#0d0d1a]/80 transition-colors"
+            <ScrollReveal key={id} delay={id * 0.08}>
+              <div
+                className={`rounded-xl overflow-hidden transition-all duration-300 ${
+                  open === id ? "bg-[#0a0a1c]" : "bg-[#07071a]"
+                }`}
+                style={{ border: open === id ? `1px solid ${color}25` : "1px solid rgba(255,255,255,0.04)" }}
               >
-                <div
-                  className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
-                  style={{ background: `${color}15` }}
+                <button
+                  onClick={() => setOpen(open === id ? null : id)}
+                  className="w-full p-5 text-left flex items-center gap-4 hover:bg-white/2 transition-colors"
                 >
-                  <Icon size={18} style={{ color }} />
-                </div>
-                <div className="flex-1">
-                  <div className="text-xs font-bold uppercase tracking-widest mb-0.5" style={{ color }}>
-                    Perspective {id} · {label}
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: `${color}12` }}>
+                    <Icon size={18} style={{ color }} />
                   </div>
-                  <div className="text-sm font-bold text-[#f0f0ff]">{title}</div>
-                </div>
-                <div className="hidden sm:block text-xs font-bold px-3 py-1 rounded-full shrink-0"
-                  style={{ color: verdictColor, background: `${verdictColor}15` }}>
-                  {verdict}
-                </div>
-                <ChevronDown
-                  size={16}
-                  className="text-[#4a4a6a] shrink-0 transition-transform duration-300"
-                  style={{ transform: open === id ? "rotate(180deg)" : "rotate(0deg)" }}
-                />
-              </button>
-
-              {open === id && (
-                <div className="px-5 pb-5 space-y-3 border-t border-[#1a1a2e]">
-                  <div className="pt-4">
-                    <div className="text-xs font-bold mb-3" style={{ color: verdictColor }}>
-                      VERDICT: {verdict}
+                  <div className="flex-1 min-w-0">
+                    <div className="text-[10px] font-black uppercase tracking-[0.2em] mb-0.5" style={{ color }}>
+                      {id} · {label}
                     </div>
-                    {body.map((paragraph, i) => (
-                      <p key={i} className="text-sm text-[#7a7a9a] leading-relaxed mb-3">
-                        {paragraph}
-                      </p>
-                    ))}
+                    <div className="text-sm font-bold text-[#d0d0e8] leading-tight">{title}</div>
                   </div>
-                </div>
-              )}
-            </div>
+                  <div
+                    className="hidden sm:block text-[10px] font-black px-3 py-1 rounded-full shrink-0"
+                    style={{ color: verdictColor, background: `${verdictColor}12` }}
+                  >
+                    {verdict}
+                  </div>
+                  <ChevronDown
+                    size={15}
+                    className="shrink-0 text-[#404060] transition-transform duration-300"
+                    style={{ transform: open === id ? "rotate(180deg)" : "rotate(0deg)" }}
+                  />
+                </button>
+
+                {open === id && (
+                  <div className="px-5 pb-5 border-t border-white/4">
+                    <div className="pt-4">
+                      <div className="text-[10px] font-black uppercase tracking-wider mb-3" style={{ color: verdictColor }}>
+                        VERDICT: {verdict}
+                      </div>
+                      <div className="space-y-3">
+                        {body.map((p, i) => (
+                          <p key={i} className="text-sm text-[#7070a0] leading-relaxed">{p}</p>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>
