@@ -1,0 +1,50 @@
+posting:
+  daily_target_min: 150
+  daily_target_max: 350
+  # Spread posts from 6am to 11pm (accounts for all time zones)
+  posting_window_start: "06:00"
+  posting_window_end: "23:00"
+  # Max posts per account per day (TikTok soft limit)
+  max_per_account_per_day: 5
+  # Delay between uploads on same account (seconds)
+  inter_post_delay_seconds: 600
+
+video:
+  # Resolution options: "1080x1920" (portrait 9:16), "1080x1080" (square)
+  resolution: "1080x1920"
+  fps: 30
+  duration_min: 15   # seconds
+  duration_max: 59   # seconds (keep under 60s for best reach)
+  output_dir: "data/generated"
+  temp_dir: "data/temp"
+
+  # Text-to-speech engine: "gtts" (free) or "elevenlabs" (higher quality)
+  tts_engine: "gtts"
+  tts_language: "en"
+  tts_speed: 1.0
+
+  # Background music volume (0.0 - 1.0)
+  music_volume: 0.15
+
+templates:
+  # Active template categories
+  active:
+    - motivational
+    - educational
+    - listicle
+    - facts
+    - tips
+
+scheduler:
+  # How often the scheduler checks for new jobs (seconds)
+  tick_interval: 60
+  # Retry failed uploads after N minutes
+  retry_after_minutes: 30
+  max_retries: 3
+
+tiktok_api:
+  base_url: "https://open.tiktokapis.com/v2"
+  # Chunk size for video upload (bytes) — TikTok requires 5MB-64MB chunks
+  chunk_size_bytes: 10485760  # 10MB
+  upload_timeout_seconds: 300
+  rate_limit_sleep_seconds: 2
