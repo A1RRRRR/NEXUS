@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  nexus:
+    build: .
+    container_name: nexus_engine
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./data:/app/data          # videos, DB, logs persist on host
+      - ./config.yaml:/app/config.yaml
+    environment:
+      - PYTHONUNBUFFERED=1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # Optional: run add_account interactively
+  # docker-compose run --rm nexus-setup python scripts/add_account.py
+  nexus-setup:
+    build: .
+    container_name: nexus_setup
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+    profiles: ["setup"]           # only runs when explicitly called
+    command: python scripts/add_account.py

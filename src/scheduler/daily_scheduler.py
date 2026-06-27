@@ -1,18 +1,12 @@
 """
-Daily posting scheduler.
+Daily posting scheduler — fully autonomous.
 
-Responsibilities every day at midnight:
-  1. Determine how many videos to post today (random within configured range)
-  2. Get all available accounts
-  3. Spread videos evenly across accounts, each capped at max_per_account
-  4. Generate videos if needed to fill the queue
-  5. Schedule each post at a random time within the posting window
-  6. Populate the VideoQueue
-
-During the day (continuous loop):
-  - Claim and execute ready jobs from the queue
-  - Retry failed jobs after the cooldown period
-  - Log results via AccountManager
+What happens every day automatically:
+  00:01 — plan_day():    pick daily target, distribute across accounts, generate videos, fill queue
+  Every tick — execute_pending(): upload any job whose scheduled time has arrived
+  Every tick — retry failed jobs after cooldown
+  02:00 — cleanup():    delete videos older than 2 days to save disk space
+  Every 6h — health_check(): warn if too few active accounts remain
 """
 
 import math
@@ -34,12 +28,10 @@ cfg = load_config()
 
 POST_CFG = cfg["posting"]
 SCH_CFG  = cfg["scheduler"]
+VID_CFG  = cfg["video"]
 
 
 def _random_times_in_window(count: int, start_str: str, end_str: str, date_obj: date) -> list[str]:
-    """
-    Return `count` unique ISO datetime strings spread randomly within [start, end].
-    """
     start_h, start_m = map(int, start_str.split(":"))
     end_h, end_m     = map(int, end_str.split(":"))
 
@@ -47,7 +39,13 @@ def _random_times_in_window(count: int, start_str: str, end_str: str, date_obj: 
     end_ts   = datetime(date_obj.year, date_obj.month, date_obj.day, end_h, end_m)
     window   = int((end_ts - start_ts).total_seconds())
 
-    offsets = sorted(random.sample(range(0, window, 60), min(count, window // 60)))
+    if count >= window // 60:
+        # More slots than minutes — spread evenly
+        step = window // max(count, 1)
+        offsets = [i * step for i in range(count)]
+    else:
+        offsets = sorted(random.sample(range(0, window, 60), count))
+
     return [
         (start_ts + timedelta(seconds=off)).strftime("%Y-%m-%d %H:%M:%S")
         for off in offsets
@@ -59,30 +57,23 @@ class DailyScheduler:
         self.accounts = account_manager
         self.queue    = queue
         self.auth     = auth
-        self._scheduler = BackgroundScheduler()
+        self._scheduler = BackgroundScheduler(timezone="UTC")
 
     # ------------------------------------------------------------------
-    # Plan today's posts
+    # Plan today — called at midnight and on startup
     # ------------------------------------------------------------------
     def plan_day(self) -> int:
-        """
-        Build the posting plan for today. Returns number of jobs queued.
-
-        Called automatically at midnight; can also be called manually.
-        """
         today = date.today()
-        target = random.randint(
-            POST_CFG["daily_target_min"],
-            POST_CFG["daily_target_max"],
-        )
+        target = random.randint(POST_CFG["daily_target_min"], POST_CFG["daily_target_max"])
         max_per = POST_CFG["max_per_account_per_day"]
 
         available = self.accounts.available_accounts()
         if not available:
-            logger.error("No available accounts! Add accounts with: python scripts/add_account.py")
+            logger.error(
+                "No available accounts! Add accounts with: python scripts/add_account.py"
+            )
             return 0
 
-        # How many posts each account will do
         total_capacity = len(available) * max_per
         actual_target  = min(target, total_capacity)
 
@@ -91,33 +82,33 @@ class DailyScheduler:
             target, len(available), total_capacity, actual_target,
         )
 
-        # Distribute videos across accounts (round-robin fill)
-        assignments: list[tuple[int, str]] = []  # (account_id, scheduled_at)
+        # Round-robin assignment: fill each account up to its cap
+        slot_pool: list[tuple[int, str]] = []
         per_account = math.ceil(actual_target / len(available))
 
-        slot_pool = []
         for account in available:
-            n = min(per_account, max_per)
+            slots_for_this = min(per_account, max_per, actual_target - len(slot_pool))
+            if slots_for_this <= 0:
+                break
             times = _random_times_in_window(
-                n,
+                slots_for_this,
                 POST_CFG["posting_window_start"],
                 POST_CFG["posting_window_end"],
                 today,
             )
             for t in times:
                 slot_pool.append((account.id, t))
-                if len(slot_pool) >= actual_target:
-                    break
-            if len(slot_pool) >= actual_target:
-                break
 
         random.shuffle(slot_pool)
 
-        # Generate videos and enqueue
+        # Generate one video per slot and enqueue
         jobs_queued = 0
+        active_templates = cfg["templates"].get("active", ["motivational"])
+
         for account_id, scheduled_at in slot_pool:
+            template = random.choice(active_templates)
             try:
-                video_path, title, hashtags, template = self._generate_one()
+                video_path, title, hashtags = self._generate_one(template)
                 self.queue.enqueue(
                     video_path=video_path,
                     title=title,
@@ -128,42 +119,34 @@ class DailyScheduler:
                 )
                 jobs_queued += 1
             except Exception as exc:
-                logger.error("Failed to queue job for account %d: %s", account_id, exc)
+                logger.error("Failed to generate/queue job for account %d: %s", account_id, exc)
 
         logger.info("Queued %d jobs for today.", jobs_queued)
         return jobs_queued
 
-    def _generate_one(self) -> tuple[str, str, list[str], str]:
-        """Generate one video and return (path, title, hashtags, template)."""
+    def _generate_one(self, template: str) -> tuple[str, list[str], str]:
         from src.video.generator import create_video
         from src.video.templates import get_random_script
-
-        active_templates = cfg["templates"].get("active", ["motivational"])
-        template = random.choice(active_templates)
-        script   = get_random_script(template)
-        path     = create_video(script=script)
-        return path, script.title, script.hashtags, template
+        script = get_random_script(template)
+        path   = create_video(script=script)
+        return path, script.title, script.hashtags
 
     # ------------------------------------------------------------------
-    # Execution loop — run jobs as they become due
+    # Execute pending jobs (called on every tick)
     # ------------------------------------------------------------------
     def execute_pending(self):
-        """Check the queue and execute any jobs that are now due."""
         retry_mins = SCH_CFG["retry_after_minutes"]
 
-        # New ready jobs
         job = self.queue.claim_next()
         while job:
             self._post_job(job)
             job = self.queue.claim_next()
 
-        # Retryable failed jobs
         retry_job = self.queue.claim_retryable(retry_mins)
         if retry_job:
             self._post_job(retry_job)
 
     def _post_job(self, job: PostJob):
-        """Execute a single posting job."""
         account = self.accounts.get_account(job.account_id)
         if not account or not account.active:
             self.queue.mark_failed(job.id, "Account not found or inactive")
@@ -187,13 +170,19 @@ class DailyScheduler:
                 status="success",
                 publish_id=publish_id,
             )
+            logger.info(
+                "Posted '%s' from account %s (publish_id=%s)",
+                job.title, account.username, publish_id,
+            )
 
-            # Respect TikTok's per-account rate limit
-            time.sleep(POST_CFG.get("inter_post_delay_seconds", 600))
+            # Respect per-account spacing to avoid spam detection
+            delay = POST_CFG.get("inter_post_delay_seconds", 600)
+            time.sleep(delay)
 
         except Exception as exc:
             err = str(exc)
-            logger.error("Post failed (job %d, account %d): %s", job.id, job.account_id, err)
+            logger.error("Post failed (job %d, account %s): %s", job.id,
+                         account.username if account else "?", err)
             self.queue.mark_failed(job.id, err)
             self.accounts.log_post(
                 account_id=job.account_id,
@@ -204,28 +193,88 @@ class DailyScheduler:
             )
 
     # ------------------------------------------------------------------
-    # APScheduler wiring
+    # Cleanup — delete generated videos older than 2 days
+    # ------------------------------------------------------------------
+    def cleanup(self):
+        output_dir = Path(VID_CFG.get("output_dir", "data/generated"))
+        temp_dir   = Path(VID_CFG.get("temp_dir", "data/temp"))
+        cutoff     = time.time() - 2 * 86400  # 2 days ago
+
+        removed = 0
+        for directory in (output_dir, temp_dir):
+            if directory.exists():
+                for f in directory.iterdir():
+                    if f.is_file() and f.stat().st_mtime < cutoff:
+                        f.unlink(missing_ok=True)
+                        removed += 1
+
+        if removed:
+            logger.info("Cleanup: removed %d old video/temp files.", removed)
+
+    # ------------------------------------------------------------------
+    # Health check — warn if running low on active accounts
+    # ------------------------------------------------------------------
+    def health_check(self):
+        active = self.accounts.get_all_active()
+        min_needed = math.ceil(POST_CFG["daily_target_min"] / POST_CFG["max_per_account_per_day"])
+        if len(active) < min_needed:
+            logger.warning(
+                "HEALTH: Only %d active accounts — need %d for target of %d/day. "
+                "Add more with: python scripts/add_account.py",
+                len(active), min_needed, POST_CFG["daily_target_min"],
+            )
+        else:
+            logger.info(
+                "HEALTH: %d active accounts — capacity %d posts/day.",
+                len(active), len(active) * POST_CFG["max_per_account_per_day"],
+            )
+
+        # Log today's progress
+        stats = self.accounts.daily_stats()
+        logger.info(
+            "TODAY: published=%d, failed=%d, pending=%d",
+            stats.get("success", 0), stats.get("failed", 0),
+            self.queue.pending_count(),
+        )
+
+    # ------------------------------------------------------------------
+    # APScheduler wiring — start the engine
     # ------------------------------------------------------------------
     def start(self):
-        """Start the background scheduler. Blocks until interrupted."""
         tick = SCH_CFG["tick_interval"]
 
-        # Plan today's posts immediately on start
-        self._scheduler.add_job(self.plan_day, "cron", hour=0, minute=1)
-        self._scheduler.add_job(self.execute_pending, "interval", seconds=tick)
+        # Daily plan at 00:01 UTC
+        self._scheduler.add_job(self.plan_day, "cron", hour=0, minute=1, id="plan_day")
+
+        # Cleanup at 02:00 UTC
+        self._scheduler.add_job(self.cleanup, "cron", hour=2, minute=0, id="cleanup")
+
+        # Health check every 6 hours
+        self._scheduler.add_job(self.health_check, "interval", hours=6, id="health")
+
+        # Execution tick
+        self._scheduler.add_job(self.execute_pending, "interval", seconds=tick, id="execute")
 
         self._scheduler.start()
         logger.info("Scheduler running. Tick every %ds.", tick)
 
-        # Run once on startup so we don't wait for midnight
-        logger.info("Running initial plan_day on startup...")
-        self.plan_day()
+        # On startup: plan today + run health check immediately
+        logger.info("Running startup plan_day and health_check...")
+        self.health_check()
+
+        if self.queue.pending_count() == 0:
+            self.plan_day()
+        else:
+            logger.info(
+                "Queue already has %d pending jobs — skipping plan_day.",
+                self.queue.pending_count(),
+            )
 
         try:
             while True:
                 time.sleep(30)
         except (KeyboardInterrupt, SystemExit):
-            logger.info("Shutting down scheduler.")
+            logger.info("Shutting down NEXUS scheduler.")
             self._scheduler.shutdown()
 
     def stop(self):

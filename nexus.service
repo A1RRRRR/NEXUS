@@ -1,0 +1,21 @@
+# Copy to /etc/systemd/system/nexus.service
+# Then: sudo systemctl daemon-reload && sudo systemctl enable nexus && sudo systemctl start nexus
+
+[Unit]
+Description=NEXUS TikTok Automation Engine
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=YOUR_USERNAME
+WorkingDirectory=/path/to/NEXUS
+ExecStart=/path/to/NEXUS/.venv/bin/python main.py start
+Restart=always
+RestartSec=30
+StandardOutput=journal
+StandardError=journal
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
