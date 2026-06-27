@@ -1,0 +1,250 @@
+.recipes-page {
+  padding-top: 72px;
+  min-height: 100vh;
+}
+
+.recipes-header {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 60px 24px 48px;
+}
+
+.recipes-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.recipes-header h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.recipes-header p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.recipes-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* ── Controls ── */
+.recipes-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 12px 40px 12px 42px;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+}
+
+.search-clear {
+  position: absolute;
+  right: 12px;
+  background: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.search-clear:hover {
+  color: var(--text-primary);
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.toggle-group {
+  display: flex;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.toggle-btn {
+  background: none;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-right: 1px solid var(--border-color);
+  transition: background 0.2s, color 0.2s;
+}
+
+.toggle-btn:last-child {
+  border-right: none;
+}
+
+.toggle-btn.active {
+  background: var(--accent-gold);
+  color: var(--bg-primary);
+  font-weight: 600;
+}
+
+.toggle-btn:not(.active):hover {
+  background: var(--bg-card-hover);
+  color: var(--text-secondary);
+}
+
+.sort-select {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  margin-left: auto;
+}
+
+.sort-select:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+}
+
+/* ── Category tabs ── */
+.category-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 28px;
+  scrollbar-width: none;
+}
+
+.category-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.cat-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 100px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  white-space: nowrap;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.cat-tab:hover {
+  border-color: var(--border-accent);
+  color: var(--text-primary);
+}
+
+.cat-tab.active {
+  background: rgba(212, 160, 23, 0.15);
+  border-color: rgba(212, 160, 23, 0.4);
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
+/* ── Results ── */
+.results-bar {
+  margin-bottom: 20px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.recipes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* ── Empty state ── */
+.no-results {
+  text-align: center;
+  padding: 80px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.no-results span {
+  font-size: 3rem;
+}
+
+.no-results h3 {
+  font-size: 1.4rem;
+  color: var(--text-primary);
+}
+
+.no-results p {
+  color: var(--text-muted);
+}
+
+.btn-reset {
+  background: none;
+  color: var(--accent-gold);
+  border: 1px solid rgba(212, 160, 23, 0.4);
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+
+.btn-reset:hover {
+  background: rgba(212, 160, 23, 0.1);
+}
+
+@media (max-width: 640px) {
+  .filter-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sort-select {
+    margin-left: 0;
+  }
+}

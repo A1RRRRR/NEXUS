@@ -1,0 +1,135 @@
+.drink-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  cursor: pointer;
+}
+
+.drink-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  border-color: var(--border-accent);
+}
+
+.drink-card-visual {
+  position: relative;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drink-card-emoji {
+  font-size: 4rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.4));
+  transition: transform 0.3s;
+}
+
+.drink-card:hover .drink-card-emoji {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+.drink-card-badges {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  gap: 6px;
+}
+
+.badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 100px;
+  letter-spacing: 0.5px;
+}
+
+.badge-alcoholic {
+  background: var(--badge-alcoholic);
+  border: 1px solid var(--badge-alcoholic-border);
+  color: var(--badge-alcoholic-text);
+}
+
+.badge-nonalcoholic {
+  background: var(--badge-nonalcoholic);
+  border: 1px solid var(--badge-nonalcoholic-border);
+  color: var(--badge-nonalcoholic-text);
+}
+
+.badge-pro {
+  background: rgba(212, 160, 23, 0.15);
+  border: 1px solid rgba(212, 160, 23, 0.4);
+  color: var(--accent-gold);
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+}
+
+.drink-card-body {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.drink-card-name {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.drink-card-desc {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.drink-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 4px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.meta-item svg {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.difficulty {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: auto;
+}
+
+.difficulty-easy {
+  background: rgba(76, 175, 125, 0.15);
+  color: #6fcf97;
+}
+
+.difficulty-medium {
+  background: rgba(212, 160, 23, 0.15);
+  color: var(--accent-gold);
+}
+
+.difficulty-hard {
+  background: rgba(212, 55, 55, 0.15);
+  color: #f07070;
+}
