@@ -1,126 +1,76 @@
 const reviews = [
-  {
-    name: "Sarah M.",
-    location: "Westside, TX",
-    rating: 5,
-    text: "ProRoof replaced our entire roof in one day! The crew was professional, clean, and the final product looks incredible. Our neighbors keep asking who did our roof. Couldn't be happier.",
-    project: "Full Roof Replacement",
-    date: "2 weeks ago",
-    avatar: "SM",
-  },
-  {
-    name: "James T.",
-    location: "Lakewood, TX",
-    rating: 5,
-    text: "Had a leak causing water damage. Called at 7pm, they were there by 9pm with tarps and had it fully repaired the next morning. Insurance handled smoothly too. These guys are the real deal.",
-    project: "Emergency Repair",
-    date: "1 month ago",
-    avatar: "JT",
-  },
-  {
-    name: "Maria & Carlos R.",
-    location: "Oak Park, TX",
-    rating: 5,
-    text: "Three quotes, ProRoof was the most thorough and honest about what we actually needed (turned out we didn't need a full replacement — just targeted repairs). Saved us $8,000. Integrity is rare.",
-    project: "Roof Inspection & Repair",
-    date: "6 weeks ago",
-    avatar: "MR",
-  },
-  {
-    name: "David K.",
-    location: "Downtown, TX",
-    rating: 5,
-    text: "Commercial flat roof for my restaurant. Done over a weekend so we didn't lose any business days. 18 months later, zero issues. Worth every penny and then some.",
-    project: "Commercial TPO Roofing",
-    date: "2 months ago",
-    avatar: "DK",
-  },
-  {
-    name: "Linda H.",
-    location: "Riverside, TX",
-    rating: 5,
-    text: "After the hail storm I was dreading dealing with insurance. ProRoof handled EVERYTHING — the adjuster call, the paperwork, even followed up on my claim. My only job was to pick the shingle color.",
-    project: "Storm Damage Claim",
-    date: "3 months ago",
-    avatar: "LH",
-  },
-  {
-    name: "Robert P.",
-    location: "Northgate, TX",
-    rating: 5,
-    text: "Fourth time using ProRoof across three properties. Consistent quality, same great crew, same fair price. When you find a contractor this good you don't look anywhere else.",
-    project: "Repeat Customer",
-    date: "1 month ago",
-    avatar: "RP",
-  },
+  { name: "Sarah M.",     loc: "Westside, TX",   stars: 5, text: "ProRoof replaced our entire roof in ONE day. The crew was unreal. Neighbors keep asking who did it.", project: "Full Replacement",  avatar: "SM" },
+  { name: "James T.",     loc: "Lakewood, TX",   stars: 5, text: "Called at 7pm, they showed up by 9pm with tarps. Fully repaired by morning. These guys are legends.", project: "Emergency Repair",   avatar: "JT" },
+  { name: "Maria R.",     loc: "Oak Park, TX",   stars: 5, text: "Saved us $8,000 by being honest — we didn't need a full replacement. Integrity is rare. These guys have it.", project: "Honest Inspection", avatar: "MR" },
+  { name: "David K.",     loc: "Downtown, TX",   stars: 5, text: "Commercial flat roof for my restaurant done over a weekend. Zero disruption. 18 months — zero issues.", project: "Commercial TPO",    avatar: "DK" },
+  { name: "Linda H.",     loc: "Riverside, TX",  stars: 5, text: "ProRoof handled my whole insurance claim — adjuster meetings, paperwork, follow-ups. I just picked a color.", project: "Storm Claim",       avatar: "LH" },
+  { name: "Robert P.",    loc: "Northgate, TX",  stars: 5, text: "Fourth time using ProRoof across three properties. Same crew. Same quality. Same fair price. Don't look elsewhere.", project: "Repeat Customer",   avatar: "RP" },
+  { name: "Chris W.",     loc: "Midtown, TX",    stars: 5, text: "Quote was lower than 4 competitors AND the job came out better. Still amazed. 10/10 would recommend.", project: "Beat Every Quote",  avatar: "CW" },
+  { name: "Tanya B.",     loc: "Greendale, TX",  stars: 5, text: "I was dreading this project. ProRoof made it painless. Done in 8 hours. Zero mess left behind.", project: "Smooth Experience",  avatar: "TB" },
 ];
+
+// Split into two rows
+const row1 = [...reviews, ...reviews];
+const row2 = [...reviews.slice(4), ...reviews.slice(0, 4), ...reviews.slice(4), ...reviews.slice(0, 4)];
+
+function ReviewCard({ r }: { r: typeof reviews[0] }) {
+  return (
+    <div
+      className="flex-shrink-0 w-72 glass rounded-2xl p-6 mx-3"
+      style={{ border: "1px solid rgba(255,255,255,0.06)" }}
+    >
+      <div className="text-orange text-lg mb-3">{"★".repeat(r.stars)}</div>
+      <p className="text-white/60 text-sm leading-relaxed mb-4 line-clamp-3">&ldquo;{r.text}&rdquo;</p>
+      <div className="flex items-center gap-3">
+        <div className="w-9 h-9 gradient-bg rounded-full flex items-center justify-center text-white text-xs font-black shrink-0">
+          {r.avatar}
+        </div>
+        <div>
+          <div className="text-white font-bold text-sm">{r.name}</div>
+          <div className="text-white/30 text-xs">{r.project}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Testimonials() {
   return (
-    <section className="py-20 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14">
-          <span className="badge mb-4">Real Reviews</span>
-          <h2 className="section-title">
-            Don&apos;t Take Our Word For It
-          </h2>
-          <p className="section-subtitle mx-auto">
-            340+ five-star reviews on Google, Angi, and HomeAdvisor.
-            Here&apos;s what your neighbors are saying.
-          </p>
-          {/* Overall rating */}
-          <div className="flex items-center justify-center gap-3 mt-6">
-            <div className="flex stars text-3xl">★★★★★</div>
-            <div className="text-left">
-              <div className="text-3xl font-black text-brand-navy">5.0</div>
-              <div className="text-sm text-slate-500">340+ verified reviews</div>
-            </div>
-          </div>
-        </div>
+    <section className="py-24 bg-dark2 overflow-hidden relative">
+      {/* Fade edges */}
+      <div className="absolute left-0 top-0 bottom-0 w-32 z-10 pointer-events-none"
+           style={{ background: "linear-gradient(to right, #080B1A, transparent)" }} />
+      <div className="absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none"
+           style={{ background: "linear-gradient(to left, #080B1A, transparent)" }} />
 
-        {/* Reviews grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {reviews.map((r) => (
-            <div key={r.name} className="card p-7 flex flex-col">
-              {/* Stars */}
-              <div className="flex stars text-lg mb-4">
-                {"★".repeat(r.rating)}
-              </div>
-              {/* Quote */}
-              <blockquote className="text-slate-600 text-sm leading-relaxed flex-1 mb-6">
-                &ldquo;{r.text}&rdquo;
-              </blockquote>
-              {/* Reviewer */}
-              <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
-                <div className="w-10 h-10 bg-orange-gradient rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0">
-                  {r.avatar}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="font-semibold text-brand-navy text-sm">{r.name}</div>
-                  <div className="text-xs text-slate-400 truncate">{r.location}</div>
-                </div>
-                <div className="text-right shrink-0">
-                  <div className="text-xs font-medium text-orange-500">{r.project}</div>
-                  <div className="text-xs text-slate-400">{r.date}</div>
-                </div>
-              </div>
-            </div>
-          ))}
+      <div className="max-w-4xl mx-auto px-4 text-center mb-14 relative z-10">
+        <span className="inline-block glass-orange text-orange text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
+          Real Reviews
+        </span>
+        <h2 className="font-display font-black text-white leading-none mb-3"
+            style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)" }}>
+          What People Are
+          <br />
+          <span className="gradient-text">Saying About Us</span>
+        </h2>
+        <div className="flex items-center justify-center gap-3 mt-4">
+          <span className="text-orange text-3xl">★★★★★</span>
+          <span className="text-white font-black text-2xl">5.0</span>
+          <span className="text-white/30 text-sm">· 340+ verified reviews</span>
         </div>
+      </div>
 
-        {/* Google badge */}
-        <div className="text-center mt-10">
-          <a
-            href="#"
-            className="inline-flex items-center gap-3 bg-white border border-slate-200 hover:border-orange-300 rounded-xl px-6 py-3 shadow-sm hover:shadow-md transition-all"
-          >
-            <span className="text-2xl">G</span>
-            <div className="text-left">
-              <div className="text-sm font-bold text-slate-800">Read all reviews on Google</div>
-              <div className="text-xs text-slate-500">340 reviews · 5.0 ★</div>
-            </div>
-          </a>
+      {/* Row 1 — scrolls left */}
+      <div className="flex mb-4">
+        <div className="flex animate-marquee-l">
+          {row1.map((r, i) => <ReviewCard key={`r1-${i}`} r={r} />)}
+        </div>
+      </div>
+
+      {/* Row 2 — scrolls right */}
+      <div className="flex">
+        <div className="flex animate-marquee-r">
+          {row2.map((r, i) => <ReviewCard key={`r2-${i}`} r={r} />)}
         </div>
       </div>
     </section>
