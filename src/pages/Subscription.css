@@ -114,8 +114,8 @@
 
 .plans-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
 .plan-card {
@@ -307,7 +307,7 @@
 
 .compare-row {
   display: grid;
-  grid-template-columns: 1fr 120px 120px;
+  grid-template-columns: 1fr 100px 100px 100px;
   align-items: center;
 }
 
@@ -368,6 +368,11 @@
 
 .advanced-value {
   color: var(--accent-gold);
+  font-weight: 600;
+}
+
+.max-value {
+  color: var(--accent-copper);
   font-weight: 600;
 }
 
@@ -599,19 +604,23 @@
 }
 
 /* ── Responsive ── */
-@media (max-width: 640px) {
+@media (max-width: 860px) {
   .plans-grid {
     grid-template-columns: 1fr;
+    max-width: 480px;
+    margin: 0 auto;
   }
+}
 
-  .compare-row {
-    grid-template-columns: 1fr 80px 80px;
+@media (max-width: 640px) {
+  .compare-table-3 .compare-row {
+    grid-template-columns: 1fr 60px 60px 60px;
   }
 
   .compare-feature,
   .compare-plan {
-    padding: 12px 12px;
-    font-size: 0.82rem;
+    padding: 10px 8px;
+    font-size: 0.78rem;
   }
 
   .sub-final-cta-inner {

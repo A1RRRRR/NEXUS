@@ -4,6 +4,9 @@ import Home from './pages/Home'
 import Recipes from './pages/Recipes'
 import DrinkDetail from './pages/DrinkDetail'
 import Subscription from './pages/Subscription'
+import Community from './pages/Community'
+import CommunityDetail from './pages/CommunityDetail'
+import CreateDrink from './pages/CreateDrink'
 import './App.css'
 
 export default function App() {
@@ -15,6 +18,9 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/recipes" element={<Recipes />} />
           <Route path="/recipes/:id" element={<DrinkDetail />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/community/:id" element={<CommunityDetail />} />
+          <Route path="/create" element={<CreateDrink />} />
           <Route path="/subscribe" element={<Subscription />} />
         </Routes>
       </main>
@@ -28,6 +34,7 @@ export default function App() {
             <div className="footer-col">
               <h4>Product</h4>
               <a href="/recipes">All Recipes</a>
+              <a href="/community">Community</a>
               <a href="/subscribe">Pricing</a>
             </div>
             <div className="footer-col">

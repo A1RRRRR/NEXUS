@@ -25,6 +25,7 @@ export default function Navbar() {
         <div className={`navbar-links ${menuOpen ? 'open' : ''}`}>
           <Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link>
           <Link to="/recipes" className={location.pathname.startsWith('/recipes') ? 'active' : ''}>Recipes</Link>
+          <Link to="/community" className={location.pathname.startsWith('/community') || location.pathname === '/create' ? 'active' : ''}>Community</Link>
           <Link to="/subscribe" className={`nav-cta ${location.pathname === '/subscribe' ? 'active' : ''}`}>
             Get Started
           </Link>

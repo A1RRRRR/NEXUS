@@ -2,6 +2,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { getDrinkById, getRelatedDrinks } from '../data/drinks'
 import DrinkCard from '../components/DrinkCard'
+import ReviewSection from '../components/ReviewSection'
 import './DrinkDetail.css'
 
 export default function DrinkDetail() {
@@ -137,6 +138,9 @@ export default function DrinkDetail() {
               ))}
             </div>
           </section>
+
+          {/* Reviews */}
+          <ReviewSection drinkId={`official_${drink.id}`} drinkName={drink.name} />
         </div>
 
         <aside className="detail-aside">

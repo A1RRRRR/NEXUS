@@ -23,6 +23,9 @@ const plans = [
       'Batch cocktail guides',
       'Exclusive bar secrets',
       'Video walkthroughs',
+      'Community recipe feed',
+      'Create & publish your own drinks',
+      'Rate & review community drinks',
     ],
     cta: 'Start Basic — $49.90/mo',
     color: 'var(--accent-amber)',
@@ -31,7 +34,7 @@ const plans = [
     id: 'advanced',
     name: 'Advanced',
     price: 79.9,
-    badge: 'Most Popular',
+    badge: null,
     tagline: 'The complete bartender experience',
     features: [
       'Everything in Basic',
@@ -44,9 +47,34 @@ const plans = [
       'Priority support',
       'Early access to new recipes',
     ],
-    notIncluded: [],
+    notIncluded: [
+      'Community recipe feed',
+      'Create & publish your own drinks',
+      'Rate & review community drinks',
+    ],
     cta: 'Start Advanced — $79.90/mo',
     color: 'var(--accent-gold)',
+  },
+  {
+    id: 'max',
+    name: 'Max',
+    price: 89.99,
+    badge: 'Best Value',
+    tagline: 'Create, share & build a following',
+    features: [
+      'Everything in Advanced',
+      'Community recipe feed — browse 1000s of user drinks',
+      'Create & publish your own drink recipes',
+      'Rate and review any community drink',
+      'Like & save your favourite community recipes',
+      'Creator profile with follower count',
+      'Featured Creator spotlight eligibility',
+      'Dedicated creator support',
+      'Early access to all new features',
+    ],
+    notIncluded: [],
+    cta: 'Start Max — $89.99/mo',
+    color: 'var(--accent-copper)',
   },
 ]
 
@@ -163,38 +191,47 @@ export default function Subscription() {
       <div className="compare-section">
         <div className="compare-inner">
           <h2>Full comparison</h2>
-          <div className="compare-table">
+          <div className="compare-table compare-table-3">
             <div className="compare-row compare-header">
               <div className="compare-feature">Feature</div>
               <div className="compare-plan">Basic</div>
-              <div className="compare-plan featured-col">Advanced</div>
+              <div className="compare-plan">Advanced</div>
+              <div className="compare-plan featured-col">Max</div>
             </div>
             {[
-              ['Recipes', '100+', '200+'],
-              ['Alcoholic drinks', '✓', '✓'],
-              ['Non-alcoholic drinks', '✓', '✓'],
-              ['Step-by-step instructions', '✓', '✓'],
-              ['Ingredient scaling', '✓', '✓'],
-              ['Monthly new recipes', '✓', '✓'],
-              ['Pro-level recipes', '—', '✓'],
-              ['Exclusive bar secrets', '—', '✓'],
-              ['Batch cocktail guides', '—', '✓'],
-              ['Video walkthroughs', '—', '✓'],
-              ['Flavour pairing guides', '—', '✓'],
-              ['Priority support', '—', '✓'],
-              ['Early access', '—', '✓'],
-            ].map(([feature, basic, advanced]) => (
+              ['Recipes', '100+', '200+', '200+'],
+              ['Alcoholic drinks', '✓', '✓', '✓'],
+              ['Non-alcoholic drinks', '✓', '✓', '✓'],
+              ['Step-by-step instructions', '✓', '✓', '✓'],
+              ['Ingredient scaling', '✓', '✓', '✓'],
+              ['Monthly new recipes', '✓', '✓', '✓'],
+              ['Pro-level recipes', '—', '✓', '✓'],
+              ['Exclusive bar secrets', '—', '✓', '✓'],
+              ['Batch cocktail guides', '—', '✓', '✓'],
+              ['Video walkthroughs', '—', '✓', '✓'],
+              ['Flavour pairing guides', '—', '✓', '✓'],
+              ['Priority support', '—', '✓', '✓'],
+              ['Community recipe feed', '—', '—', '✓'],
+              ['Create & post your own drinks', '—', '—', '✓'],
+              ['Rate & review community drinks', '—', '—', '✓'],
+              ['Creator profile & spotlight', '—', '—', '✓'],
+            ].map(([feature, basic, advanced, max]) => (
               <div className="compare-row" key={feature}>
                 <div className="compare-feature">{feature}</div>
-                <div className="compare-plan">{basic === '✓'
-                  ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6fcf97" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                  : basic === '—'
-                  ? <span className="no-feature">—</span>
+                <div className="compare-plan">
+                  {basic === '✓' ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6fcf97" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  : basic === '—' ? <span className="no-feature">—</span>
                   : <span>{basic}</span>}
                 </div>
-                <div className="compare-plan featured-col">{advanced === '✓'
-                  ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d4a017" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <div className="compare-plan">
+                  {advanced === '✓' ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d4a017" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  : advanced === '—' ? <span className="no-feature">—</span>
                   : <span className="advanced-value">{advanced}</span>}
+                </div>
+                <div className="compare-plan featured-col">
+                  {max === '✓' ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b5622a" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  : max === '—' ? <span className="no-feature">—</span>
+                  : <span className="max-value">{max}</span>}
                 </div>
               </div>
             ))}

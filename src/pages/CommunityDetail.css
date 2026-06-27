@@ -1,0 +1,142 @@
+.new-recipe-banner {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(76, 175, 125, 0.15);
+  border: 1px solid rgba(76, 175, 125, 0.4);
+  color: #6fcf97;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  z-index: 50;
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+  animation: slideDown 0.4s ease;
+}
+
+@keyframes slideDown {
+  from { transform: translateX(-50%) translateY(-16px); opacity: 0; }
+  to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+.community-creator-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.creator-avatar-lg {
+  font-size: 2.2rem;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.creator-by {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(245, 234, 216, 0.5);
+}
+
+.creator-name-lg {
+  display: block;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.creator-date {
+  margin-left: auto;
+  font-size: 0.78rem;
+  color: rgba(245, 234, 216, 0.4);
+}
+
+.badge-community {
+  background: rgba(100, 150, 212, 0.15);
+  border: 1px solid rgba(100, 150, 212, 0.4);
+  color: #90b8f8;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+/* ── Like button in meta row ── */
+.like-meta-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.like-meta-btn.liked {
+  color: #f07070;
+}
+
+.like-meta-btn svg {
+  transition: transform 0.2s;
+}
+
+.like-meta-btn:hover svg {
+  transform: scale(1.2);
+}
+
+/* ── Creator aside card ── */
+.creator-card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.creator-card-avatar {
+  font-size: 3rem;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-secondary);
+  border-radius: 50%;
+  margin-bottom: 4px;
+}
+
+.creator-card h3 {
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.creator-card p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.creator-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-color);
+  padding-top: 12px;
+  width: 100%;
+}
